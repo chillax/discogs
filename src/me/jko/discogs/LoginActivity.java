@@ -26,7 +26,7 @@ public class LoginActivity extends Activity {
 	 }
 	 
 	 /*
-	  * Handler for the AuthActivitys result
+	  * Handler for the AuthActivity's result
 	  */
 	 
 	 @Override

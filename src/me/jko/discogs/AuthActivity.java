@@ -10,8 +10,8 @@ import org.scribe.exceptions.OAuthException;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
-
 import me.jko.discogs.R;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,9 +22,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class AuthActivity extends Activity {
-	final static String APIKEY = "mVXsXOljHxRxIBgumCkN";
-	final static String APISECRET = "EwxFXEDUnetGxWfkqluhMHkSvAJQyTjR";
-	final static String CALLBACK = "oauth://discogs";
 	
 	private OAuthService mService;
 	private WebView mWebView;
@@ -37,16 +34,16 @@ public class AuthActivity extends Activity {
 
 		 mService = new ServiceBuilder()
 		  .provider(DiscogsApi.class)
-		  .apiKey(APIKEY)
-		  .apiSecret(APISECRET)
-		  .callback(CALLBACK)
+		  .apiKey(getString(R.string.api_key))
+		  .apiSecret(getString(R.string.api_secret))
+		  .callback(getString(R.string.api_callback))
 		  .build();
 		 
 		 new AuthTask().execute();
 	 }
-
+	
 	 private class AuthTask extends AsyncTask<Void, Void, String> {
-		 protected String doInBackground(Void... arg0) {
+		protected String doInBackground(Void... arg0) {
 			// Temporary URL
 			String authURL = "http://api.discogs.com/";
 			
@@ -59,50 +56,50 @@ public class AuthActivity extends Activity {
 			}
 			
 			return authURL;
-		 }
+		}
 		 
-		 @Override
-		 protected void onPostExecute(String authURL) {
-			 mWebView = (WebView) findViewById(R.id.auth_webview);
+		@SuppressLint("SetJavaScriptEnabled")
+		@Override
+		protected void onPostExecute(String authURL) {
+			mWebView = (WebView) findViewById(R.id.auth_webview);
 			 
-			 WebSettings webSettings = mWebView.getSettings();
-			 webSettings.setJavaScriptEnabled(true);
+			WebSettings webSettings = mWebView.getSettings();
+			webSettings.setJavaScriptEnabled(true);
 			 
-			 mWebView.setWebViewClient(new WebViewClient() {
-				 @Override
-				 public boolean shouldOverrideUrlLoading(WebView view, String url) {
-					 super.shouldOverrideUrlLoading(view, url);
+			mWebView.setWebViewClient(new WebViewClient() {
+				@Override
+				public boolean shouldOverrideUrlLoading(WebView view, String url) {
+					super.shouldOverrideUrlLoading(view, url);
 					 
-					 // when the callback url is loaded
-					 if(url.startsWith("oauth")) {
-						 mWebView.setVisibility(WebView.GONE);
+					// when the callback url is loaded
+					if(url.startsWith("oauth")) {
+						mWebView.setVisibility(WebView.GONE);
 					 
-						 final String url1 = url;
-						 Thread t1 = new Thread() {
-							 public void run() {
-								 Uri uri = Uri.parse(url1);
-								 String verifier = uri.getQueryParameter("oauth_verifier");
-								 Verifier v = new Verifier(verifier);
-								 Token accessToken = mService.getAccessToken(mRequestToken, v);
+						final String url1 = url;
+						Thread t1 = new Thread() {
+							public void run() {
+								Uri uri = Uri.parse(url1);
+								String verifier = uri.getQueryParameter("oauth_verifier");
+								Verifier v = new Verifier(verifier);
+								Token accessToken = mService.getAccessToken(mRequestToken, v);
 								 
-								 Intent intent = new Intent();
-								 intent.putExtra("access_token", accessToken.getToken());
-								 intent.putExtra("access_secret", accessToken.getSecret());
-								 setResult(RESULT_OK, intent);
+								Intent intent = new Intent();
+								intent.putExtra("access_token", accessToken.getToken());
+								intent.putExtra("access_secret", accessToken.getSecret());
+								setResult(RESULT_OK, intent);
 								 
-								 finish();
-							 }
-						 };
+								finish();
+							}
+						};
 						 
-						 t1.start();
+						t1.start(); 
+					}
 					 
-					 }
-					 
-					 return false;
-				 }
-			 });
+					return false;
+				}
+			});
 			 
-			 mWebView.loadUrl(authURL);
-		 }
-	 }
+			mWebView.loadUrl(authURL);
+		}
+	}
 }
