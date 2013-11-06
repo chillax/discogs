@@ -1,7 +1,10 @@
 package me.jko.discogs;
 
 import org.scribe.builder.ServiceBuilder;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
 import org.scribe.model.Token;
+import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
 import android.content.Context;
@@ -13,6 +16,7 @@ public class RestClient {
 	private Token token;
 	private SharedPreferences prefs;
 	
+	// constructor	
 	public RestClient(Context c) {
 		 service = new ServiceBuilder()
 		  .provider(DiscogsApi.class)
@@ -24,5 +28,13 @@ public class RestClient {
 		 prefs = c.getSharedPreferences("DiscogsPrefs", 0);
 		 
 		 token = new Token(prefs.getString("access_token", null), prefs.getString("access_secret", null));
+	}
+	
+	public String get(String s) {
+		OAuthRequest req = new OAuthRequest(Verb.GET, s);
+		service.signRequest(token, req);
+		Response res = req.send();
+		
+		return res.getBody();
 	}
 }

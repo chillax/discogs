@@ -1,9 +1,9 @@
 package me.jko.discogs;
 
 import me.jko.discogs.R;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +16,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	
-    	
+    	RestClient client = new RestClient( getActivity() );
+    	String res = client.get("http://api.discogs.com/oauth/identity");
+    	Log.d("DEBUG", res);
     	
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         //int i = getArguments().getInt(ARG_PLANET_NUMBER);
