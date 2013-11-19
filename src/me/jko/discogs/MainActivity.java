@@ -22,7 +22,7 @@ public class MainActivity extends FragmentActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     
-    // put this to R
+    // TODO: move this to R.Strings
     public static final String PREFS_NAME = "DiscogsPrefs";
     private RestClient client;
 
@@ -31,10 +31,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         
         checkLogin();
-        
-        // 
-    	client = new RestClient(this);
-    	new GetIdentityTask().execute();
         
         setContentView(R.layout.activity_main);
 
@@ -50,11 +46,10 @@ public class MainActivity extends FragmentActivity {
         //mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        
-        // Load default fragment
-        Fragment fragment = new ProfileFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+ 
+        // TODO: we should check if we already have the username stored to avoid useless requests
+    	client = new RestClient(this);
+    	new GetIdentityTask().execute();
     }
     
     /*
@@ -75,17 +70,24 @@ public class MainActivity extends FragmentActivity {
 	    	   //progressBar.setProgress(parameters[0]);
 	       }
 	       protected void onPostExecute(Void parameters) {
-	    	   //startButton.setEnabled(true);
+	    	   Log.d("DEBUG", "postExecute");
 	    	   
 	    	   try {
-	    		   JSONObject json = new JSONObject(res);
-	    		   SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
-	    		   SharedPreferences.Editor editor = prefs.edit();
-	    		   editor.putString("access_token", json.getString("username"));
-	    		   editor.commit();
-	    	   } catch(JSONException e) {
+					JSONObject json = new JSONObject(res);
+					
+					// save fetched username to shared preferences
+					SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
+					SharedPreferences.Editor editor = prefs.edit();
+					editor.putString("access_token", json.getString("username"));
+					editor.commit();
 	    		   
-	    	   }
+					// Load default fragment
+					Fragment fragment = new ProfileFragment();
+					FragmentManager fragmentManager = getSupportFragmentManager();
+					fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+				} catch(JSONException e) {
+				
+				}
 	       }
 	}	
 
