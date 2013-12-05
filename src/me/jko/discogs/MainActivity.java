@@ -40,56 +40,14 @@ public class MainActivity extends FragmentActivity {
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         // Set the adapter for the drawer's listview
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mSectionTitles));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mSectionTitles));
         // Set the list's click listener
         //mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
- 
-        // TODO: we should check if we already have the username stored to avoid useless requests
-    	client = new RestClient(this);
-    	new GetIdentityTask().execute();
     }
     
-    /*
-     * Task to get the users ident from the API, we can use the ident to fetch user's profile
-     * in ProfileFragment
-     */
-    
-	private class GetIdentityTask extends AsyncTask<Void,Integer,Void> {
-	      private String res;
-		
-		  protected void onPreExecute() {}
 
-	      protected Void doInBackground(Void... parameters) {
-	    	  	res = client.get("http://api.discogs.com/oauth/identity");
-	            return null;
-	       }
-	       protected void onProgressUpdate(Integer... parameters) {
-	    	   //progressBar.setProgress(parameters[0]);
-	       }
-	       protected void onPostExecute(Void parameters) {
-	    	   Log.d("DEBUG", "postExecute");
-	    	   
-	    	   try {
-					JSONObject json = new JSONObject(res);
-					
-					// save fetched username to shared preferences
-					SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
-					SharedPreferences.Editor editor = prefs.edit();
-					editor.putString("access_token", json.getString("username"));
-					editor.commit();
-	    		   
-					// Load default fragment
-					Fragment fragment = new ProfileFragment();
-					FragmentManager fragmentManager = getSupportFragmentManager();
-					fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-				} catch(JSONException e) {
-				
-				}
-	       }
-	}	
 
 	/*
 	 * We use this to check if we already have the user's credentials stored
@@ -102,6 +60,11 @@ public class MainActivity extends FragmentActivity {
 			// if token or secret doesn't exist, start login activity
 			Intent intent = new Intent(this, LoginActivity.class);
 			startActivity(intent);
+		} else {
+			// Load default fragment
+			Fragment fragment = new ProfileFragment();
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 		}
 	}
 }

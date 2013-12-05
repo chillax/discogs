@@ -32,6 +32,10 @@
             android:name="me.jko.discogs.AuthActivity"
             android:label="@string/app_name">
         </activity>
+        
+        <service
+  			android:name="com.octo.android.robospice.JacksonSpringAndroidSpiceService"
+  			android:exported="false" />
             
         </application>
 
