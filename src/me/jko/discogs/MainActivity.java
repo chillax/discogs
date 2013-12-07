@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 
@@ -29,7 +30,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         checkLogin();
         
         setContentView(R.layout.activity_main);

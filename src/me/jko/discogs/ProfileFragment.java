@@ -4,6 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
 import me.jko.discogs.R;
 import android.content.SharedPreferences;
@@ -16,35 +19,60 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends SpicedFragment {
 
 	private RestClient client;
 	private SharedPreferences prefs;
 	public static final String PREFS_NAME = "DiscogsPrefs";
 	
-	protected SpiceManager spiceManager = new SpiceManager(JacksonSpringAndroidSpiceService.class);
-	
 	public ProfileFragment() {
         // Empty constructor required for fragment subclasses
     }
-    
+	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	
-    	client = new RestClient( getActivity() );
-    	GetIdentityTask mIdentTask = new GetIdentityTask();
-    	mIdentTask.execute();
-
     	View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         //int i = getArguments().getInt(ARG_PLANET_NUMBER);
-
-        // TODO: we should check if we already have the username stored to avoid useless requests
-   	
+ 	
         getActivity().setTitle("Profile");
         return rootView;
     }
 
+    @Override 
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+    	super.onViewCreated(view, savedInstanceState);
+    	
+    	ProfileFragment.this.getActivity().setProgressBarIndeterminateVisibility(true);
+    	Request request = new Request(this.getActivity(), "GET", "http://api.discogs.com/oauth/identity");
+    	spiceManager.execute(request, "identity", DurationInMillis.ALWAYS_RETURNED, new IdentityRequestListener());
+    }
+    
+    private final class IdentityRequestListener implements RequestListener<String> {
+    	@Override
+    	public void onRequestFailure(SpiceException ex) {
+    		Toast.makeText(getActivity(), "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+    		ProfileFragment.this.getActivity().setProgressBarIndeterminateVisibility(false);
+    	}
+    	
+    	@Override
+    	public void onRequestSuccess(String res) {
+    		JSONObject json;
+			try {
+				json = new JSONObject(res);
+	    		ProfileFragment.this.getActivity().setProgressBarIndeterminateVisibility(false);
+
+	    		
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    }
+    
+    
+    
     /*
      * Task to get the users ident from the API, we can use this to see if our login has been successful
      */

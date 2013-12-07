@@ -32,6 +32,8 @@ public class RestClient {
 	
 	public String get(String s) {
 		OAuthRequest req = new OAuthRequest(Verb.GET, s);
+		// discogs api requires this one
+		req.addHeader("User-Agent", "DiscogsAndroidClient/0.1 +http://jko.me");
 		service.signRequest(token, req);
 		Response res = req.send();
 		
