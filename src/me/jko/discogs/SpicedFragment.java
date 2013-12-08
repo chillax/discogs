@@ -2,7 +2,6 @@ package me.jko.discogs;
 
 import com.octo.android.robospice.SpiceManager;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 /*
@@ -10,6 +9,7 @@ import android.support.v4.app.Fragment;
  */
 
 public class SpicedFragment extends Fragment {
+
 	protected SpiceManager spiceManager = new SpiceManager(CustomSpiceService.class);
 
 	public SpicedFragment() {
@@ -24,17 +24,16 @@ public class SpicedFragment extends Fragment {
 
 	@Override
 	public void onStop() {
-		// Please review https://github.com/octo-online/robospice/issues/96 for the reason of this if statement
+		// Reason for if https://github.com/octo-online/robospice/issues/96
 		if (spiceManager.isStarted()) {
 			spiceManager.shouldStop();
 		}
+		
 		super.onStop();
 	}
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
+
+	protected SpiceManager getSpiceManager() {
+    	return spiceManager;
 	}
 
 }

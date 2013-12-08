@@ -1,42 +1,47 @@
 package me.jko.discogs;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import me.jko.discogs.R;
+import me.jko.discogs.Request.CollectionRequest;
+import me.jko.discogs.Request.IdentityRequest;
+import me.jko.discogs.Request.ProfileRequest;
+import me.jko.discogs.models.ReleaseCollection;
+import me.jko.discogs.models.Identity;
+import me.jko.discogs.models.Profile;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ProfileFragment extends SpicedFragment {
 
-	private RestClient client;
 	private SharedPreferences prefs;
+	private Request request;
 	public static final String PREFS_NAME = "DiscogsPrefs";
+	RelativeLayout profileProgressContainer;
+	
 	
 	public ProfileFragment() {
         // Empty constructor required for fragment subclasses
     }
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
+	}
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        //int i = getArguments().getInt(ARG_PLANET_NUMBER);
  	
-        getActivity().setTitle("Profile");
         return rootView;
     }
 
@@ -44,111 +49,72 @@ public class ProfileFragment extends SpicedFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
     	super.onViewCreated(view, savedInstanceState);
     	
-    	ProfileFragment.this.getActivity().setProgressBarIndeterminateVisibility(true);
-    	Request request = new Request(this.getActivity(), "GET", "http://api.discogs.com/oauth/identity");
-    	spiceManager.execute(request, "identity", DurationInMillis.ALWAYS_RETURNED, new IdentityRequestListener());
+    	profileProgressContainer = (RelativeLayout) getActivity().findViewById(R.id.profileProgressContainer);
+    	profileProgressContainer.setVisibility(View.VISIBLE);    	
+    	
+    	request = new Request(getActivity());
+    	
+    	SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, 0);
+    	
+    	getActivity().setTitle("Fetching your profile");
+    	
+    	if(prefs.getString("username", null) == null) {
+    		IdentityRequest identreq = request.new IdentityRequest(this.getActivity());
+    		getSpiceManager().execute(identreq, new IdentityRequestListener());
+    	} else {
+    		ProfileRequest profilereq = request.new ProfileRequest(this.getActivity(), prefs.getString("username", null));
+    		String lastRequestCacheKey = profilereq.createCacheKey();
+    		getSpiceManager().execute(profilereq, lastRequestCacheKey, DurationInMillis.ONE_MINUTE * 15, new ProfileRequestListener());
+    	}   	
     }
     
-    private final class IdentityRequestListener implements RequestListener<String> {
+    /*
+     * Listeners
+     */
+    
+    
+    // Identity
+    private final class IdentityRequestListener implements RequestListener<Identity> {
     	@Override
     	public void onRequestFailure(SpiceException ex) {
     		Toast.makeText(getActivity(), "Error: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
-    		ProfileFragment.this.getActivity().setProgressBarIndeterminateVisibility(false);
     	}
     	
     	@Override
-    	public void onRequestSuccess(String res) {
-    		JSONObject json;
-			try {
-				json = new JSONObject(res);
-	    		ProfileFragment.this.getActivity().setProgressBarIndeterminateVisibility(false);
-
-	    		
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    	public void onRequestSuccess(Identity res) {    		    		
+			SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, 0);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("username", res.getUsername());
+			editor.commit();
+			
+			
+			ProfileRequest profilereq = request.new ProfileRequest(ProfileFragment.this.getActivity(), res.getUsername());
+			
+			String lastRequestCacheKey = profilereq.createCacheKey();			
+			getSpiceManager().execute(profilereq, lastRequestCacheKey, DurationInMillis.ONE_MINUTE * 15, new ProfileRequestListener());
     	}
     }
-    
-    
-    
-    /*
-     * Task to get the users ident from the API, we can use this to see if our login has been successful
-     */
-    
-	private class GetIdentityTask extends AsyncTask<Void,Integer,Void> {
-	      private String res;
-		
-		  protected void onPreExecute() {}
 
-	      protected Void doInBackground(Void... parameters) {
-	    	  	res = client.get("http://api.discogs.com/oauth/identity");
-	            return null;
-	       }
-	       protected void onProgressUpdate(Integer... parameters) {
-	    	   //progressBar.setProgress(parameters[0]);
-	       }
-	       protected void onPostExecute(Void parameters) {
-	    	   
-	    	   try {
-					Log.d("GET", res);
-					JSONObject json = new JSONObject(res);
-					
-					// save fetched username to shared preferences
-					SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, 0);
-					SharedPreferences.Editor editor = prefs.edit();
-					editor.putString("username", json.getString("username"));
-					editor.commit();
-					
-			    	new GetProfileTask().execute();
-
-				} catch(JSONException e) {
-				
-				}
-	       }
-	}	    
-    
-	/*
-	 * This task fetches the actual profile information of the user
-	 */
-    
-	private class GetProfileTask extends AsyncTask<Void,Integer,Void> {
-	      private String res;
-	      public static final String PREFS_NAME = "DiscogsPrefs";
-		
-		  protected void onPreExecute() {}
-
-	      protected Void doInBackground(Void... parameters) {
-	    	  SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, 0);
-	    	  
-	    	  String baseUrl = "http://api.discogs.com/users/%s";
-	    	  String profileUrl = String.format(baseUrl, prefs.getString("username", null));
-	    	  res = client.get(profileUrl);
-	          
-	    	  return null;
-	       }
-	       protected void onProgressUpdate(Integer... parameters) {
-	    	   //progressBar.setProgress(parameters[0]);
-	       }
-	       
-	       protected void onPostExecute(Void parameters) {
-	    	   //startButton.setEnabled(true);
-	    	   
-	    	   try {
-					JSONObject json = new JSONObject(res);
-					
-					// Update profile fields
-				    TextView username = (TextView) getActivity().findViewById(R.id.profileUsername);
-				    username.setText(json.getString("username"));
-					
-				    TextView email = (TextView) getActivity().findViewById(R.id.profileEmail);
-				    email.setText(json.getString("email"));
-				    
-				} catch(JSONException e) {
-				
-				}
-	       }
-	}	
-    
+    // Profile
+    private final class ProfileRequestListener implements RequestListener<Profile> {
+    	@Override
+    	public void onRequestFailure(SpiceException e) {
+    		Toast.makeText(getActivity(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+    	}
+    	
+    	@Override
+    	public void onRequestSuccess(Profile res) {
+    		TextView usernameText = (TextView) getActivity().findViewById(R.id.profileUsername);
+    		usernameText.setText(res.getUsername());
+    		
+    		TextView emailText = (TextView) getActivity().findViewById(R.id.profileEmail);
+    		emailText.setText(res.getEmail());
+    		
+    		TextView collectionText = (TextView) getActivity().findViewById(R.id.titleCollection);
+    		collectionText.setText(Integer.toString(res.getNum_collection()) + " items in collection");
+    		
+    		profileProgressContainer.setVisibility(View.GONE);
+    		getActivity().setTitle("Profile");
+    	}
+    }
 }

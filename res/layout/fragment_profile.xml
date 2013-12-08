@@ -1,26 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <RelativeLayout 
+        android:id="@+id/profileProgressContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        >
+       
+		<ProgressBar
+        	android:id="@+id/profileProgressCircle"
+        	style="?android:attr/progressBarStyleLarge"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_centerHorizontal="true"
+        	android:layout_centerVertical="true" />
+        
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/profileUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:text="Username"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/profileEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/profileUsername"
-        android:layout_below="@+id/profileUsername"
-        android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        <TextView
+            android:id="@+id/profileUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="normal"
+             />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/profileEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/profileUsername"
+            android:layout_below="@+id/profileUsername"
+            android:text="Small Text"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/titleCollection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/profileEmail"
+            android:layout_below="@+id/profileEmail"
+            android:layout_marginTop="42dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Collection"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+    
+</LinearLayout>
