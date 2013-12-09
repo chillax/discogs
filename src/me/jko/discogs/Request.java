@@ -9,6 +9,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import me.jko.discogs.models.ReleaseCollection;
 import me.jko.discogs.models.Identity;
 import me.jko.discogs.models.Profile;
+import me.jko.discogs.models.SearchResults;
 import me.jko.discogs.models.SingleRelease;
 import android.app.Activity;
 import android.util.Log;
@@ -80,7 +81,6 @@ public class Request {
 			String res;
 			Profile profile = new Profile();
 			res = client.get(String.format("http://api.discogs.com/users/%s", username));
-			Log.d("GET", res);
 			
 			try {
 				profile = mapper.readValue(res, Profile.class);
@@ -124,7 +124,6 @@ public class Request {
 			String res;
 			ReleaseCollection collection = new ReleaseCollection();
 			res = client.get(String.format("http://api.discogs.com/users/%s/collection/folders/0/releases?sort=artist&per_page=25&page=%s", username, page));
-			Log.d("GET", res);
 			
 			try {
 				collection = mapper.readValue(res, ReleaseCollection.class);
@@ -162,7 +161,7 @@ public class Request {
 		}
 	
 		@Override 
-		public S loadDataFromNetwork() throws Exception {
+		public SingleRelease loadDataFromNetwork() throws Exception {
 			String res;
 			SingleRelease release = new SingleRelease();
 			res = client.get(String.format("http://api.discogs.com/releases/%s", id));
@@ -186,7 +185,48 @@ public class Request {
 		 */
 		
 		public String createCacheKey() {
-			return "collection." + username + "." + page;
+			return "release." + id;
+		}
+	}
+	
+	/*
+	 * Search query
+	 */
+
+	public class SearchRequest extends SpiceRequest<SearchResults> {
+		
+		private String query;
+		
+		public SearchRequest(Activity activity, String query) {
+			super(SearchResults.class);
+			this.query = query;
+		}
+	
+		@Override 
+		public SearchResults loadDataFromNetwork() throws Exception {
+			String res;
+			SearchResults results = new SearchResults();
+			res = client.get(String.format("http://api.discogs.com/database/search?q=%s&type=release&release_title", query));
+			
+			try {
+				results= mapper.readValue(res, SearchResults.class);
+			} catch (JsonGenerationException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			return results;
+		}
+		
+		/*
+		 * Create unique cache key, in profile case profile.username is a good one
+		 */
+		
+		public String createCacheKey() {
+			return "search." + query;
 		}
 	}
 	

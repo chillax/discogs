@@ -2,12 +2,9 @@ package me.jko.discogs.activities;
 
 
 import me.jko.discogs.R;
-import me.jko.discogs.R.drawable;
-import me.jko.discogs.R.id;
-import me.jko.discogs.R.layout;
-import me.jko.discogs.R.string;
 import me.jko.discogs.fragments.CollectionFragment;
 import me.jko.discogs.fragments.ProfileFragment;
+import me.jko.discogs.fragments.SearchFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -21,7 +18,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
@@ -45,7 +41,7 @@ public class MainActivity extends FragmentActivity {
         
         // Navigation Drawer begins here (mostly copied from the official guide)
         mTitle = mDrawerTitle = getTitle();
-        mSectionTitles = new String[] {"Profile", "Collection", "Browse", "Marketplace"};
+        mSectionTitles = new String[] {"Profile", "Collection", "Search"};
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         
@@ -96,6 +92,10 @@ public class MainActivity extends FragmentActivity {
             
             if(position == 1) {
             	selectItem(new CollectionFragment(), position);
+            }
+            
+            if(position == 2) {
+            	selectItem(new SearchFragment(), position);
             }
         }
     }

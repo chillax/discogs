@@ -6,12 +6,8 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 import me.jko.discogs.R;
 import me.jko.discogs.Request;
-import me.jko.discogs.R.id;
-import me.jko.discogs.R.layout;
-import me.jko.discogs.Request.CollectionRequest;
 import me.jko.discogs.Request.IdentityRequest;
 import me.jko.discogs.Request.ProfileRequest;
-import me.jko.discogs.models.ReleaseCollection;
 import me.jko.discogs.models.Identity;
 import me.jko.discogs.models.Profile;
 import android.content.SharedPreferences;
@@ -57,7 +53,7 @@ public class ProfileFragment extends SpicedFragment {
     	
     	request = new Request(getActivity());
     	
-    	SharedPreferences prefs = getActivity().getSharedPreferences(PREFS_NAME, 0);
+    	prefs = getActivity().getSharedPreferences(PREFS_NAME, 0);
     	
     	getActivity().setTitle("Fetching your profile");
     	
@@ -107,10 +103,10 @@ public class ProfileFragment extends SpicedFragment {
     	@Override
     	public void onRequestSuccess(Profile res) {
     		TextView usernameText = (TextView) getActivity().findViewById(R.id.profileUsername);
-    		usernameText.setText(res.getUsername());
+    		usernameText.setText("Username: " + res.getUsername());
     		
     		TextView emailText = (TextView) getActivity().findViewById(R.id.profileEmail);
-    		emailText.setText(res.getEmail());
+    		emailText.setText("Email: " + res.getEmail());
     		
     		TextView collectionText = (TextView) getActivity().findViewById(R.id.titleCollection);
     		collectionText.setText(Integer.toString(res.getNum_collection()) + " items in collection");

@@ -1,8 +1,6 @@
 package me.jko.discogs.models;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -24,7 +22,6 @@ public class CollectionRelease {
 	@DatabaseField
 	private Integer rating;
 	private Basic_information basic_information;
-	private List<Note> notes = new ArrayList<Note>();
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	
 	public Integer getId() {
@@ -65,14 +62,6 @@ public class CollectionRelease {
 	
 	public void setBasic_information(Basic_information basic_information) {
 		this.basic_information = basic_information;
-	}
-	
-	public List<Note> getNotes() {
-		return notes;
-	}
-	
-	public void setNotes(List<Note> notes) {
-		this.notes = notes;
 	}
 	
 	public Map<String, Object> getAdditionalProperties() {

@@ -24,29 +24,37 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/resultTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/profileUsername"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="17dp"
+            android:text="Profile Details"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/profileUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:fontFamily="sans-serif-light"
-            android:textStyle="normal"
-             />
+            android:layout_alignLeft="@+id/profileEmail"
+            android:layout_below="@+id/resultTitle"
+            android:layout_marginTop="14dp"
+            android:text="Username"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/profileEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/profileUsername"
+            android:layout_alignParentLeft="true"
             android:layout_below="@+id/profileUsername"
-            android:text="Small Text"
+            android:layout_marginLeft="16dp"
+            android:text="Email"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -55,10 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/profileEmail"
             android:layout_below="@+id/profileEmail"
-            android:layout_marginTop="42dp"
-            android:fontFamily="sans-serif-light"
             android:text="Collection"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </RelativeLayout>
     

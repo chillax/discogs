@@ -22,7 +22,6 @@ public class ReleaseCollection {
 	@DatabaseField
 	public int foobar;
 	
-	private Pagination pagination;
 	@ForeignCollectionField(foreignFieldName = "collection")
 	private Collection<CollectionRelease> releases = new ArrayList<CollectionRelease>();
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -37,14 +36,6 @@ public class ReleaseCollection {
 	
 	public void setFoobar(int i) {
 		this.foobar = i;
-	}
-	
-	public Pagination getPagination() {
-		return pagination;
-	}
-	
-	public void setPagination(Pagination pagination) {
-		this.pagination = pagination;
 	}
 	
 	public Collection<CollectionRelease> getReleases() {

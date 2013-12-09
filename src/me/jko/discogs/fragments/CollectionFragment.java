@@ -7,11 +7,7 @@ import me.jko.discogs.CollectionListView;
 import me.jko.discogs.CollectionListView.CollectionListListener;
 import me.jko.discogs.R;
 import me.jko.discogs.Request;
-import me.jko.discogs.R.id;
-import me.jko.discogs.R.layout;
 import me.jko.discogs.Request.CollectionRequest;
-import me.jko.discogs.Request.IdentityRequest;
-import me.jko.discogs.Request.ProfileRequest;
 import me.jko.discogs.models.CollectionRelease;
 import me.jko.discogs.models.ReleaseCollection;
 
@@ -21,12 +17,13 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -74,8 +71,8 @@ public class CollectionFragment extends SpicedFragment implements CollectionList
     	this.firstLoad = true;
     	currentPage = 1;
 		CollectionRequest collectionreq = request.new CollectionRequest(this.getActivity(), prefs.getString("username", null), currentPage);
-		String lastRequestCacheKey = collectionreq.createCacheKey();
-		getSpiceManager().execute(collectionreq, new CollectionRequestListener());
+		String ck = collectionreq.createCacheKey();
+		getSpiceManager().execute(collectionreq, ck, DurationInMillis.ONE_MINUTE, new CollectionRequestListener());
     }
     
     // Collection
@@ -102,6 +99,15 @@ public class CollectionFragment extends SpicedFragment implements CollectionList
 				   public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				      CollectionRelease release = (CollectionRelease) adapter.getAdapter().getItem(position);
 				      Log.d("DEBUG", release.getBasic_information().getTitle());
+				      
+				      // set up the fragment and set release id as its argument
+				      Fragment fragment = new ReleaseFragment();
+				      Bundle args = new Bundle();
+				      args.putInt(ReleaseFragment.ARG_RELEASE_ID, release.getId());
+				      fragment.setArguments(args);
+				      
+				      FragmentManager fragmentManager = getFragmentManager();
+				      fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 				   } 
     			});
         		
@@ -121,6 +127,7 @@ public class CollectionFragment extends SpicedFragment implements CollectionList
         currentPage += 1;
         // We load more data here
 		CollectionRequest collectionreq = request.new CollectionRequest(this.getActivity(), prefs.getString("username", null), currentPage);
-		getSpiceManager().execute(collectionreq, new CollectionRequestListener());
+		String ck = collectionreq.createCacheKey();
+		getSpiceManager().execute(collectionreq, ck, DurationInMillis.ONE_MINUTE, new CollectionRequestListener());
     }
 }

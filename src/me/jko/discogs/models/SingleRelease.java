@@ -5,12 +5,10 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SingleRelease {
 	private int id;
+	private String title;
 	private String country;
 	private int year;
 	private List<Artist> artists = new ArrayList<Artist>();
@@ -45,6 +43,14 @@ public class SingleRelease {
 
 	public void setArtists(List<Artist> artists) {
 		this.artists = artists;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 }

@@ -15,8 +15,6 @@ public class Basic_information {
 	private Integer year;
 	private String resource_url;
 	private String thumb;
-	private List<Format> formats = new ArrayList<Format>();
-	private List<Label> labels = new ArrayList<Label>();
 	private List<Artist> artists = new ArrayList<Artist>();
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -58,22 +56,6 @@ public class Basic_information {
 
 	public void setThumb(String thumb) {
 		this.thumb = thumb;
-	}
-
-	public List<Format> getFormats() {
-		return formats;
-	}
-
-	public void setFormats(List<Format> formats) {
-		this.formats = formats;
-	}
-
-	public List<Label> getLabels() {
-		return labels;
-	}
-
-	public void setLabels(List<Label> labels) {
-		this.labels = labels;
 	}
 
 	public List<Artist> getArtists() {
