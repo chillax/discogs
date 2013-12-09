@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @DatabaseTable
-public class Release {
+public class CollectionRelease {
 	
 	@DatabaseField(foreign = true)
 	private ReleaseCollection collection;

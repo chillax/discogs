@@ -9,10 +9,19 @@ import org.codehaus.jackson.map.ObjectMapper;
 import me.jko.discogs.models.ReleaseCollection;
 import me.jko.discogs.models.Identity;
 import me.jko.discogs.models.Profile;
+import me.jko.discogs.models.SingleRelease;
 import android.app.Activity;
 import android.util.Log;
 
 import com.octo.android.robospice.request.SpiceRequest;
+
+/**
+ * 
+ * @author joonas
+ * All robospice requests go here
+ *
+ */
+
 
 public class Request {
 	
@@ -114,7 +123,7 @@ public class Request {
 		public ReleaseCollection loadDataFromNetwork() throws Exception {
 			String res;
 			ReleaseCollection collection = new ReleaseCollection();
-			res = client.get(String.format("http://api.discogs.com/users/%s/collection/folders/0/releases?sort=artist", username));
+			res = client.get(String.format("http://api.discogs.com/users/%s/collection/folders/0/releases?sort=artist&per_page=25&page=%s", username, page));
 			Log.d("GET", res);
 			
 			try {
@@ -128,6 +137,48 @@ public class Request {
 			}
 			
 			return collection;
+		}
+		
+		/*
+		 * Create unique cache key, in profile case profile.username is a good one
+		 */
+		
+		public String createCacheKey() {
+			return "collection." + username + "." + page;
+		}
+	}
+	
+	/*
+	 * Release
+	 */
+	
+	public class ReleaseRequest extends SpiceRequest<SingleRelease> {
+		
+		private int id;
+		
+		public ReleaseRequest(Activity activity, int id) {
+			super(SingleRelease.class);
+			this.id = id;
+		}
+	
+		@Override 
+		public S loadDataFromNetwork() throws Exception {
+			String res;
+			SingleRelease release = new SingleRelease();
+			res = client.get(String.format("http://api.discogs.com/releases/%s", id));
+			Log.d("GET", res);
+			
+			try {
+				release = mapper.readValue(res, SingleRelease.class);
+			} catch (JsonGenerationException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			return release;
 		}
 		
 		/*

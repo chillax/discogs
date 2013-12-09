@@ -4,39 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.jko.discogs.models.Artist;
-import me.jko.discogs.models.Release;
+import me.jko.discogs.models.CollectionRelease;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class CollectionListAdapter extends ArrayAdapter<Release> {
+public class CollectionListAdapter extends ArrayAdapter<CollectionRelease> {
+	
+	private Context ctx;
 	
 	public CollectionListAdapter(Context context, int textViewResourceId) {
 		super(context, textViewResourceId);
+		this.ctx = context;
 	}
 	
-	private ArrayList<Release> releases;
+	private ArrayList<CollectionRelease> releases;
 	
-	public CollectionListAdapter(Context context, int resource, ArrayList<Release> releases) {
+	public CollectionListAdapter(Context context, int resource, ArrayList<CollectionRelease> releases) {
 		super(context, resource, releases);
 		
 		this.releases = releases;
+		this.ctx = context;
 	}
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 		if(v == null) {
-			LayoutInflater vi;
-			vi = LayoutInflater.from(getContext());
-			v = vi.inflate(R.layout.collection_list_item, null);
+			LayoutInflater vi = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			v = vi.inflate(R.layout.collection_list_item, parent, false);
 		}
 		
-		Release r = releases.get(position);
+		CollectionRelease r = releases.get(position);
 		
 		if(r != null) {
 			
@@ -74,7 +76,7 @@ public class CollectionListAdapter extends ArrayAdapter<Release> {
     }
     
     @Override
-    public Release getItem(int position) {                
+    public CollectionRelease getItem(int position) {                
         return releases.get(position);
     }
     

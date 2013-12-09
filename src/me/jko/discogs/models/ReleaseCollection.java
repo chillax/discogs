@@ -24,7 +24,7 @@ public class ReleaseCollection {
 	
 	private Pagination pagination;
 	@ForeignCollectionField(foreignFieldName = "collection")
-	private Collection<Release> releases = new ArrayList<Release>();
+	private Collection<CollectionRelease> releases = new ArrayList<CollectionRelease>();
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	
 	public int getId() {
@@ -47,11 +47,11 @@ public class ReleaseCollection {
 		this.pagination = pagination;
 	}
 	
-	public Collection<Release> getReleases() {
+	public Collection<CollectionRelease> getReleases() {
 		return releases;
 	}
 	
-	public void setReleases(List<Release> releases) {
+	public void setReleases(List<CollectionRelease> releases) {
 		this.releases = releases;
 	}
 	

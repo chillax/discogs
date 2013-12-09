@@ -3,7 +3,7 @@ package me.jko.discogs;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.jko.discogs.models.Release;
+import me.jko.discogs.models.CollectionRelease;
 import me.jko.discogs.models.ReleaseCollection;
 import me.jko.discogs.models.Profile;
 import android.app.Application;
