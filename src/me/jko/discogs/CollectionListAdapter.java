@@ -67,4 +67,21 @@ public class CollectionListAdapter extends ArrayAdapter<Release> {
 		
 		return v;
 	}
+	
+    @Override
+    public int getCount() {                
+    	return releases.size() ;
+    }
+    
+    @Override
+    public Release getItem(int position) {                
+        return releases.get(position);
+    }
+    
+    @Override
+    public long getItemId(int position) {                
+    	return releases.get(position).hashCode();
+    }
+
+
 }

@@ -1,4 +1,6 @@
-package me.jko.discogs;
+package me.jko.discogs.fragments;
+
+import me.jko.discogs.CustomSpiceService;
 
 import com.octo.android.robospice.SpiceManager;
 

@@ -3,14 +3,19 @@
  * Most of the code comes from http://login2win.blogspot.fi/2012/07/android-linkedin-oauth-implementation.html with minor tweaks
  */
 
-package me.jko.discogs;
+package me.jko.discogs.activities;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.exceptions.OAuthException;
 import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
+
+import me.jko.discogs.DiscogsApi;
 import me.jko.discogs.R;
+import me.jko.discogs.R.id;
+import me.jko.discogs.R.layout;
+import me.jko.discogs.R.string;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;

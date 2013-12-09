@@ -1,10 +1,13 @@
-package me.jko.discogs;
+package me.jko.discogs.fragments;
 
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
 import me.jko.discogs.R;
+import me.jko.discogs.Request;
+import me.jko.discogs.R.id;
+import me.jko.discogs.R.layout;
 import me.jko.discogs.Request.CollectionRequest;
 import me.jko.discogs.Request.IdentityRequest;
 import me.jko.discogs.Request.ProfileRequest;
@@ -86,8 +89,7 @@ public class ProfileFragment extends SpicedFragment {
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putString("username", res.getUsername());
 			editor.commit();
-			
-			
+						
 			ProfileRequest profilereq = request.new ProfileRequest(ProfileFragment.this.getActivity(), res.getUsername());
 			
 			String lastRequestCacheKey = profilereq.createCacheKey();			

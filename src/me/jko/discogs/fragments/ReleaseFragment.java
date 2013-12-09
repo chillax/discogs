@@ -1,5 +1,7 @@
-package me.jko.discogs;
+package me.jko.discogs.fragments;
 
+import me.jko.discogs.R;
+import me.jko.discogs.R.layout;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

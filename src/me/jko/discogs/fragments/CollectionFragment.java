@@ -1,7 +1,12 @@
-package me.jko.discogs;
+package me.jko.discogs.fragments;
 
 import java.util.ArrayList;
 
+import me.jko.discogs.CollectionListAdapter;
+import me.jko.discogs.R;
+import me.jko.discogs.Request;
+import me.jko.discogs.R.id;
+import me.jko.discogs.R.layout;
 import me.jko.discogs.Request.CollectionRequest;
 import me.jko.discogs.Request.IdentityRequest;
 import me.jko.discogs.Request.ProfileRequest;
@@ -14,6 +19,7 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +66,7 @@ public class CollectionFragment extends SpicedFragment {
     	
 
 		CollectionRequest collectionreq = request.new CollectionRequest(this.getActivity(), prefs.getString("username", null), 0);
+		String lastRequestCacheKey = collectionreq.createCacheKey();
 		getSpiceManager().execute(collectionreq, new CollectionRequestListener());
     }
     
@@ -73,6 +80,7 @@ public class CollectionFragment extends SpicedFragment {
     	@Override
     	public void onRequestSuccess(ReleaseCollection res) {
     		ArrayList<Release> releases = new ArrayList<Release>(res.getReleases());
+
     		ListView collectionListView = (ListView) getActivity().findViewById(R.id.collectionListView);
     		CollectionListAdapter clAdapter = new CollectionListAdapter(getActivity(), R.layout.collection_list_item, releases);
     		collectionListView.setAdapter(clAdapter);

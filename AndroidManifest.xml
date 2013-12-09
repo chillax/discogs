@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         android:permission="android.permission.INTERNET">
         <activity
-            android:name="me.jko.discogs.MainActivity"
+            android:name="me.jko.discogs.activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,11 +28,11 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name="me.jko.discogs.LoginActivity"
+            android:name="me.jko.discogs.activities.LoginActivity"
             android:label="@string/app_name">
         </activity>
         <activity 
-            android:name="me.jko.discogs.AuthActivity"
+            android:name="me.jko.discogs.activities.AuthActivity"
             android:label="@string/app_name">
         </activity>
         

@@ -17,12 +17,27 @@ import com.j256.ormlite.table.DatabaseTable;
 public class ReleaseCollection {
 	
 	@DatabaseField(generatedId = true)
-	private int id;
+	public int id;
 
+	@DatabaseField
+	public int foobar;
+	
 	private Pagination pagination;
 	@ForeignCollectionField(foreignFieldName = "collection")
 	private Collection<Release> releases = new ArrayList<Release>();
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	
+	public int getId() {
+		return id;
+	}
+	
+	public int getFoobar() {
+		return foobar;
+	}
+	
+	public void setFoobar(int i) {
+		this.foobar = i;
+	}
 	
 	public Pagination getPagination() {
 		return pagination;

@@ -1,7 +1,13 @@
-package me.jko.discogs;
+package me.jko.discogs.activities;
 
 
 import me.jko.discogs.R;
+import me.jko.discogs.R.drawable;
+import me.jko.discogs.R.id;
+import me.jko.discogs.R.layout;
+import me.jko.discogs.R.string;
+import me.jko.discogs.fragments.CollectionFragment;
+import me.jko.discogs.fragments.ProfileFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
