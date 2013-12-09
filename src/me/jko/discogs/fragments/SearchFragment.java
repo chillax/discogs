@@ -9,7 +9,6 @@ import me.jko.discogs.R;
 import me.jko.discogs.Request;
 import me.jko.discogs.Request.SearchRequest;
 import me.jko.discogs.SearchListAdapter;
-import me.jko.discogs.models.CollectionRelease;
 import me.jko.discogs.models.Result;
 import me.jko.discogs.models.SearchResults;
 import android.os.Bundle;

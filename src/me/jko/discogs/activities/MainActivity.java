@@ -85,7 +85,7 @@ public class MainActivity extends FragmentActivity {
     
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if(position == 0) {
             	selectItem(new ProfileFragment(), position);
             }

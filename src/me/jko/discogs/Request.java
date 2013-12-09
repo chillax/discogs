@@ -228,6 +228,5 @@ public class Request {
 		public String createCacheKey() {
 			return "search." + query;
 		}
-	}
-	
+	}	
 }

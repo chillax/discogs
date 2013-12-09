@@ -12,6 +12,7 @@ public class SingleRelease {
 	private String country;
 	private int year;
 	private List<Artist> artists = new ArrayList<Artist>();
+	private List<Image> images = new ArrayList<Image>();
 
 	public int getId() {
 		return id;
@@ -51,6 +52,14 @@ public class SingleRelease {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 	
 }

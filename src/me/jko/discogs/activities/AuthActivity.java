@@ -13,9 +13,6 @@ import org.scribe.oauth.OAuthService;
 
 import me.jko.discogs.DiscogsApi;
 import me.jko.discogs.R;
-import me.jko.discogs.R.id;
-import me.jko.discogs.R.layout;
-import me.jko.discogs.R.string;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;

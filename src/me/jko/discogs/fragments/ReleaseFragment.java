@@ -1,20 +1,31 @@
 package me.jko.discogs.fragments;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
+
+import roboguice.util.temp.Ln;
 
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.CachedSpiceRequest;
 import com.octo.android.robospice.request.listener.RequestListener;
+import com.octo.android.robospice.request.simple.BitmapRequest;
 
 import me.jko.discogs.R;
 import me.jko.discogs.Request;
 import me.jko.discogs.Request.ReleaseRequest;
 import me.jko.discogs.models.Artist;
+import me.jko.discogs.models.Image;
 import me.jko.discogs.models.SingleRelease;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,7 +99,41 @@ public class ReleaseFragment extends SpicedFragment {
 			
 			getActivity().setTitle(res.getTitle());
 			
+			
+					
+			
+			List<Image> images = res.getImages();
+			String url = images.get(0).getUri();
+			int width = images.get(0).getWidth();
+			int height = images.get(0).getHeight();
+			
+			File cacheFile = null;
+			String filename = null;
+			try {
+				filename = URLEncoder.encode(url, "UTF-8");
+				cacheFile = new File(getActivity().getCacheDir(), filename);
+			} catch (UnsupportedEncodingException e) {
+				Ln.e(e);
+			}
+						
+			BitmapRequest bitmapreq = new BitmapRequest(url, 400, 400, cacheFile);
+			CachedSpiceRequest<Bitmap> cachedreq = new CachedSpiceRequest<Bitmap>(bitmapreq, filename, DurationInMillis.ONE_MINUTE * 15);
+			spiceManager.execute(cachedreq, new BitmapRequestListener());
+			
 			releaseProgressContainer.setVisibility(View.GONE);   
+    	}
+    }
+    
+    private class BitmapRequestListener implements RequestListener<Bitmap> {
+    	@Override
+    	public void onRequestFailure(SpiceException e) {
+    		
+    	}
+    	
+    	@Override
+    	public void onRequestSuccess(Bitmap bitmap) {
+    		ImageView iv = (ImageView) getActivity().findViewById(R.id.releaseImage);
+    		iv.setImageBitmap(bitmap);
     	}
     }
 }
