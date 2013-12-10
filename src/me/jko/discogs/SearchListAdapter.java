@@ -13,6 +13,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/**
+ * A custom adapter for SearchFragment's ListView
+ * @author joonas
+ *
+ */
+
 public class SearchListAdapter extends ArrayAdapter<Result> {
 	private Context ctx;
 	private ArrayList<Result> results;

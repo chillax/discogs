@@ -10,6 +10,12 @@ import org.scribe.oauth.OAuthService;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/**
+ * A helper class for building different kinds of HTTP requests using scribe
+ * @author joonas
+ *
+ */
+
 public class RestClient {
 	
 	private OAuthService service;

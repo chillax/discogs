@@ -3,8 +3,9 @@ package me.jko.discogs;
 import org.scribe.builder.api.DefaultApi10a;
 import org.scribe.model.*;
 
-/*
- * Discogs OAuth api definition for scribe
+/**
+ * Discogs OAuth api definition for scribe library
+ * @author joonas
  */
 
 public class DiscogsApi extends DefaultApi10a {

@@ -1,6 +1,8 @@
 package me.jko.discogs.activities;
 
 
+
+
 import me.jko.discogs.R;
 import me.jko.discogs.fragments.CollectionFragment;
 import me.jko.discogs.fragments.ProfileFragment;
@@ -21,6 +23,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
+
+/**
+ * This activity contains the application's navigation and handles fragments
+ * @author joonas
+ *
+ */
 
 public class MainActivity extends FragmentActivity {
 

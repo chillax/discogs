@@ -11,6 +11,7 @@ import me.jko.discogs.Request.SearchRequest;
 import me.jko.discogs.SearchListAdapter;
 import me.jko.discogs.models.Result;
 import me.jko.discogs.models.SearchResults;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,6 +24,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+/**
+ * Fragment for searching records from the discogs db
+ * @author joonas
+ *
+ */
 
 public class SearchFragment extends SpicedFragment {
 	
@@ -54,13 +61,12 @@ public class SearchFragment extends SpicedFragment {
     	
     	request = new Request(getActivity());
     	
-		
-		
-    	
     	button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				String query = field.getText().toString();
+				// TODO: sanitize this better using URIBuilder or something
+				query = query.replaceAll(" ", "%20");
 				SearchRequest searchreq = request.new SearchRequest(getActivity(), query);
 				getSpiceManager().execute(searchreq, new SearchRequestListener());
 			}
@@ -92,9 +98,7 @@ public class SearchFragment extends SpicedFragment {
 				      Bundle args = new Bundle();
 				      args.putInt(ReleaseFragment.ARG_RELEASE_ID, result.getId());
 				      fragment.setArguments(args);
-				      
-				      Log.d("DEBUG", Integer.toString(result.getId()));
-				      
+				      				      
 				      FragmentManager fragmentManager = getFragmentManager();
 				      fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 				}

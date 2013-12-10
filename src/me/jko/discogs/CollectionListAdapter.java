@@ -12,6 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+/**
+ * 
+ * Custom adapter for CollectionFragment's ListView
+ * @author joonas
+ *
+ */
+
 public class CollectionListAdapter extends ArrayAdapter<CollectionRelease> {
 	
 	private Context ctx;
@@ -53,6 +60,8 @@ public class CollectionListAdapter extends ArrayAdapter<CollectionRelease> {
 			TextView title = (TextView) v.findViewById(R.id.collectionListItemTitle);
 			title.setText(titleString);
 			
+			
+			// because there may be many artists on a single release they are contained in a list
 			List<Artist> artists = r.getBasic_information().getArtists();
 			String artistString = "";
 			for(Artist artist: artists) {

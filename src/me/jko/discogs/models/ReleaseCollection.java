@@ -8,21 +8,14 @@ import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
-import com.j256.ormlite.table.DatabaseTable;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@DatabaseTable
 public class ReleaseCollection {
 	
-	@DatabaseField(generatedId = true)
 	public int id;
 
-	@DatabaseField
 	public int foobar;
 	
-	@ForeignCollectionField(foreignFieldName = "collection")
 	private Collection<CollectionRelease> releases = new ArrayList<CollectionRelease>();
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	

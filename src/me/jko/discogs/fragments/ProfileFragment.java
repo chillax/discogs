@@ -19,6 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Fragment for user's profile information
+ * @author joonas
+ *
+ */
+
 public class ProfileFragment extends SpicedFragment {
 
 	private SharedPreferences prefs;

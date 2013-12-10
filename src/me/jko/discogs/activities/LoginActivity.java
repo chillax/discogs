@@ -8,6 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * This activity shows a welcoming message and launches the authentication process, it also handles storing
+ * the credentials after the webview is done
+ * @author joonas
+ *
+ */
+
+
 public class LoginActivity extends Activity {
 	 @Override
 	 public void onCreate(Bundle savedInstanceState) {

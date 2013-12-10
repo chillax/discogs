@@ -27,6 +27,12 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+/**
+ * Fragment for listing the user's collection of records
+ * @author joonas
+ *
+ */
+
 public class CollectionFragment extends SpicedFragment implements CollectionListListener {
 	
 	private Request request;

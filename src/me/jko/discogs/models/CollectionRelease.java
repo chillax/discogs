@@ -5,21 +5,16 @@ import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
-@DatabaseTable
+
 public class CollectionRelease {
 	
-	@DatabaseField(foreign = true)
 	private ReleaseCollection collection;
 	
-	@DatabaseField(id = true)
 	private Integer id;
 	private Integer instance_id;
 	private Integer folder_id;
-	@DatabaseField
+
 	private Integer rating;
 	private Basic_information basic_information;
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();

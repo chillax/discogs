@@ -30,6 +30,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Fragment for displaying an individual record's information
+ * @author joonas
+ *
+ */
+
 public class ReleaseFragment extends SpicedFragment {
 	
 	public static final String ARG_RELEASE_ID = "release_id";

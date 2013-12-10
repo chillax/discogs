@@ -1,6 +1,8 @@
-/*
+/**
  * This activity handles oAuth, it loads discog.com's authorization site in a webview
  * Most of the code comes from http://login2win.blogspot.fi/2012/07/android-linkedin-oauth-implementation.html with minor tweaks
+ * 
+ * @author joonas
  */
 
 package me.jko.discogs.activities;
@@ -65,6 +67,7 @@ public class AuthActivity extends Activity {
 		protected void onPostExecute(String authURL) {
 			mWebView = (WebView) findViewById(R.id.auth_webview);
 			 
+			// need to enable javascript for the authorization to work properly
 			WebSettings webSettings = mWebView.getSettings();
 			webSettings.setJavaScriptEnabled(true);
 			 
@@ -81,6 +84,8 @@ public class AuthActivity extends Activity {
 						Thread t1 = new Thread() {
 							public void run() {
 								Uri uri = Uri.parse(url1);
+								
+								// get the verifier string and build access token 
 								String verifier = uri.getQueryParameter("oauth_verifier");
 								Verifier v = new Verifier(verifier);
 								Token accessToken = mService.getAccessToken(mRequestToken, v);

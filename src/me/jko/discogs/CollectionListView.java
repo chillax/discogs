@@ -11,7 +11,9 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 
-/*
+/**
+ * Custom ListView for CollectionFragment, allows "infinite" scrolling (fetches more data when it reaches the end) 
+ * @author joonas
  * https://github.com/survivingwithandroid/Surviving-with-android/blob/master/EndlessAdapter/src/com/survivingwithandroid/endlessadapter/EndlessListView.java
  */
 
