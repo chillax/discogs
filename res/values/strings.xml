@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Discogs</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="api_key">CHANGEME</string>
+    <string name="api_secret">CHANGEME</string>
+    <string name="api_callback">oauth://discogs</string>
+    <string name="drawer_open">Open Menu</string>
+    <string name="drawer_close">Close Menu</string>
+    <string name="preferences_name">DiscogsPrefs</string>
+    
+</resources>
